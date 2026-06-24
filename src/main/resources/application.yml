@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/usermanagementapp
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+jwt:
+  secret: ABcD1234@#$ABcD1234@#$ABcD1234@#$ABcD1234@#$
+  expiration: 3600000

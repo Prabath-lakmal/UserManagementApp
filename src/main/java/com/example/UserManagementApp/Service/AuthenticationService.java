@@ -5,6 +5,7 @@ import com.example.UserManagementApp.DTO.LoginResponseDTO;
 import com.example.UserManagementApp.DTO.RegisterRequestDTO;
 import com.example.UserManagementApp.DTO.UserDTO;
 import com.example.UserManagementApp.Entity.User;
+import com.example.UserManagementApp.JWT.JwtService;
 import com.example.UserManagementApp.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ public class AuthenticationService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
 
     public UserDTO registerNormalUser(RegisterRequestDTO registerRequestDTO){
         if (userRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
@@ -79,7 +83,7 @@ public class AuthenticationService {
                 loginRequestDTO.getPassword()
         ));
 
-        String jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user); //Autowired JwtService
 
         return LoginResponseDTO.builder()
                 .jwtToken(jwtToken)
@@ -88,6 +92,7 @@ public class AuthenticationService {
     }
 
     public ResponseEntity<String> logout(){
+        //create a expired cookie
         ResponseCookie cookie = ResponseCookie.from("JWT", "")
                 .httpOnly(true)
                 .secure(true)
